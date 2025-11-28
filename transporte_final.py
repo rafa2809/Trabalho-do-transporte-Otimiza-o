@@ -104,12 +104,14 @@ def mostrar_resumo(nome_cenario, modelo, x, ORIGENS, DESTINOS, custos):
     status = pulp.LpStatus[modelo.status]
     print(f"Status da Solução: {status}")
 
-    if status != "Optimal":
-        print(" Não foi possível encontrar uma solução ótima.")
+    if "optimal" not in status.lower():
+        print("Não foi possível encontrar uma solução ótima.")
         return None
+    else:
+        print("Solução ótima encontrada!\n")
 
     custo_total = pulp.value(modelo.objective)
-    print(f"💰 Custo Total Mínimo: R$ {custo_total:,.2f}")
+    print(f" Custo Total Mínimo: R$ {custo_total:,.2f}")
 
     print("\n Detalhe das Rotas Utilizadas:")
     print(f"{'Origem':<12} -> {'Destino':<10} {'Qtd':<10} {'Custo Unit.':<12} {'Subtotal':<10}")
@@ -161,7 +163,7 @@ def menu_sensibilidade(ORIGENS, DESTINOS):
     print("1 - Custo de Transporte")
     print("2 - Oferta de uma Fábrica")
     print("3 - Demanda de um CD")
-    print("0 - Finalizar e Sair")
+    print("0 - Finalizar e Salvar arquivo CSV")
     return ler_int("Opção: ", 0, 3)
 
 def aplicar_alteracao(opcao, oferta, demanda, custos, ORIGENS, DESTINOS):
